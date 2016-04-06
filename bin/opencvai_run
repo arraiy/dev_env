@@ -1,0 +1,10 @@
+#!/bin/bash
+docker run \
+    --env="DISPLAY" \
+    --env="PATH=/opt/opencv_ai/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+    --volume="/etc/group:/etc/group:ro" \
+    --volume="/etc/passwd:/etc/passwd:ro" \
+    --volume="/etc/shadow:/etc/shadow:ro" \
+    --volume="/etc/sudoers.d:/etc/sudoers.d:ro" \
+    --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+    -u=$(id -u ${USER}):$(id -g ${USER}) -v $OPENCV_AI_CODE_ROOT:$OPENCV_AI_CODE_ROOT -w=$(pwd) opencvai/dev_env $@
