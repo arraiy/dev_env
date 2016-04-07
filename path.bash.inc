@@ -9,11 +9,23 @@ cv_run() {
   $sdk_dir/cv_run $@
 }
 
-alias cv_cmake_init='cv_run cmake \
--DCMAKE_PREFIX_PATH=/opt/opencv_ai \
--DCMAKE_CXX_COMPILER=clang++ \
--DCMAKE_C_COMPILER=clang \
--DCMAKE_BUILD_TYPE=RelWithDebInfo '
-alias cv_cmake='cv_run cmake '
-alias cv_make='cv_run make '
-alias cv_test='cv_run ctest '
+cv_cmake_init() {
+  cv_run cmake \
+  -DCMAKE_PREFIX_PATH=/opt/opencv_ai \
+  -DCMAKE_CXX_COMPILER=clang++ \
+  -DCMAKE_C_COMPILER=clang \
+  -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+  $@
+}
+
+cv_cmake() {
+  cv_run cmake $@
+}
+
+cv_make() {
+  cv_run make $@
+}
+
+cv_test() {
+  cv_run ctest $@
+}
