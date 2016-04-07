@@ -1,0 +1,12 @@
+language: cpp
+sudo: required
+dist: trusty
+services:
+  - docker
+
+script:
+  - ./travis_build.sh
+
+cache:
+  - apt
+  - docker
