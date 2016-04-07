@@ -1,6 +1,9 @@
 dev_env: Container Based Development Environment
 ++++++++++++++++++++++++++++++++++++++++++++++++
 
+.. image:: https://travis-ci.org/opencv-ai/dev_env.svg?branch=master
+    :target: https://travis-ci.org/opencv-ai/dev_env
+
 This repository is for building the docker container based development
 environment used by opencv.ai.
 
