@@ -10,6 +10,7 @@ ExternalProject_Add(gflags
   PREFIX ${build_prefix}
   URL https://github.com/opencv-ai/gflags/archive/9353bca5e99dc4.zip
   CMAKE_ARGS
+  -DCMAKE_PREFIX_PATH=${prefix}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   -DCMAKE_CXX_COMPILER=clang++
   -DCMAKE_C_COMPILER=clang
@@ -20,6 +21,7 @@ ExternalProject_Add(glog
   DEPENDS gflags
   URL https://github.com/opencv-ai/glog/archive/f176cc84543e.zip
   CMAKE_ARGS
+  -DCMAKE_PREFIX_PATH=${prefix}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   -DCMAKE_CXX_COMPILER=clang++
   -DCMAKE_C_COMPILER=clang
@@ -30,6 +32,7 @@ ExternalProject_Add(googletest
   PREFIX ${build_prefix}
   URL https://github.com/opencv-ai/googletest/archive/d225acc90bc3a8.zip
   CMAKE_ARGS
+  -DCMAKE_PREFIX_PATH=${prefix}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   -DCMAKE_CXX_COMPILER=clang++
   -DCMAKE_C_COMPILER=clang
@@ -41,6 +44,7 @@ ExternalProject_Add(protobuf
   DEPENDS googletest
   URL https://github.com/opencv-ai/protobuf/archive/89719f07a35b.zip
   CONFIGURE_COMMAND cmake ${build_prefix}/src/protobuf/cmake
+  -DCMAKE_PREFIX_PATH=${prefix}
   -DCMAKE_INSTALL_PREFIX=${prefix}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   -DCMAKE_CXX_COMPILER=clang++
@@ -67,6 +71,7 @@ ExternalProject_Add(opencv
   CMAKE_ARGS
   -DOPENCV_EXTRA_MODULES_PATH=${build_prefix}/src/opencv_contrib/modules
   -DWITH_VTK=OFF
+  -DCMAKE_PREFIX_PATH=${prefix}
   -DCMAKE_INSTALL_PREFIX=${prefix}
   -DCMAKE_CXX_COMPILER=clang++
   -DCMAKE_C_COMPILER=clang
