@@ -1,0 +1,38 @@
+#!/bin/bash
+script_link="$( readlink "$BASH_SOURCE" )" || script_link="$BASH_SOURCE"
+apparent_sdk_dir="${script_link%/*}"
+if [ "$apparent_sdk_dir" == "$script_link" ]; then
+  apparent_sdk_dir=.
+fi
+sdk_dir="$( command cd -P "$apparent_sdk_dir" > /dev/null && pwd -P )"
+
+OPENCV_AI_CODE_ROOT="$( command cd -P "$sdk_dir/.." > /dev/null && pwd -P)"
+
+# Update the digest to match the image you which to use.
+DIGEST=@sha256:c72937cecbe2a3911c829bba7ee8a3a1a6adc1b92957327d97464655bab54ce8
+
+OPENCVAI_IMAGE=opencvai/dev_env16.04$DIGEST
+
+# these forward the host's DISPLAY to the container.
+FORWARD_DISPLAY_FLAGS=$(echo \
+    --env="DISPLAY" \
+    --volume="/etc/group:/etc/group:ro" \
+    --volume="/etc/passwd:/etc/passwd:ro" \
+    --volume="/etc/shadow:/etc/shadow:ro" \
+    --volume="/etc/sudoers.d:/etc/sudoers.d:ro" \
+    --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw"
+)
+
+# Add /opt/opencv_ai/bin to the path.
+PATH_FLAGS=$(echo \
+    --env="PATH=/opt/opencv_ai/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+)
+
+docker run -it \
+        $PATH_FLAGS \
+        $FORWARD_DISPLAY_FLAGS \
+	-u=$(id -u ${USER}):$(id -g ${USER}) \
+	-v $OPENCV_AI_CODE_ROOT:$OPENCV_AI_CODE_ROOT \
+	-w=$(pwd) \
+        $OPENCVAI_IMAGE \
+	$@

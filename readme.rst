@@ -1,92 +1,128 @@
-dev_env
-+++++++
+dev_env: Container Based Development Environment
+++++++++++++++++++++++++++++++++++++++++++++++++
 
-A docker based development environment for opencv.ai.
+This repository is for building the docker container based development
+environment used by opencv.ai.
 
-dev_env uses containers to encapsulate the toolchains and third party
-depenedencies required to build opencv.ai projects.
+We use containers to encapsulate system state, such as toolchains and
+third party dependencies required to build opencv.ai projects. The
+benefits are:
 
-Some assumptions:
+- System dependencies are easily installed in the container using
+  upstream build systems.
+- The container image that developers use is same as the container
+  used by the CI system.
+- System dependencies can be updated atomically with a commit in a git
+  repository.
+- The system dependencies are explicitly tracked in code, so its hard
+  to forget to update the docs.
 
-- Using ubuntu for your host machine.
-- The main development environment is based on ubuntu 16.04
-- Targeting clang and c++14 for c++ develelopment.
+Some notes.
+
+- We assume that the developer or CI host is ubuntu >= 14.04.
+- We are focusing on clang and c++14 for c++ development.
+- We assume cmake is the build system of choice; but do not preclude
+  other build systems.
 - All build commands are run through the container.
 - All build artifacts are run in the container, or on a compatible
   host.
-- Where possible we try to use debian binary packages; however for c++ this becomes a burden when tracking newer compilers.
+- Where possible we try to use debian binary packages; however for c++
+  this becomes a burden when tracking newer compilers.
+- For packages which need to be built they are installed to
+  ``/opt/opencv_ai`` which is an FHS root.
 
-Todo:
+*TODO*:
 
 - Add support for arm.
+- Add support for gcc?
 - Add a bare-metal configuration.
+- Add support for tsan, asan, msan.
 
 Container layout
 ----------------
 
-Its just a normal FHS, most things are installed through ``apt-get``.
+It looks just a normal `FHS
+<https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard>` as most
+things are installed through ``apt-get``.
 
 For custom built dependencies, these live in ``/opt/opencv_ai`` which
-itself is an FHS.  This makes it just work out of the box with
-CMAKE_PREFIX_PATH.
+itself is an FHS.  Dependencies in this directory can be found easily
+by adjusting CMAKE_PREFIX_PATH.
 
 When using the ``cv_run`` alias, the parent directory of dev_env gets
 mounted in the container, with the same path.
 
+
+Install
+-------
+
+To use this development environment:
+
+- install `Docker <https://docs.docker.com/engine/installation/linux/ubuntulinux/`.
+- Copy ``path.bash.inc`` and ``cv_run`` to the root of your git project.
+
 Usage
 -----
 
-Pre-requisite, install docker. Follow these instructions::
-
-  https://docs.docker.com/engine/installation/linux/ubuntulinux/
-
-To use the development container, clone it to some location that you
-want to mount on both your host and inside of the container. I use
-``~/code`` in these examples::
+These examples walk through usage using the sample project that is
+part of this git repository.  I use ``~/code`` as the root of my tree
+in these examples.  First, clone this repository::
 
   mkdir ~/code && cd ~/code && git clone https://github.com/opencv-ai/dev_env.git
 
-Souce the path.bash.inc to get some aliases that make it easier to use
-the container::
+The normal flow for using the environment is to source
+``path.bash.inc`` to get some aliases that make it easier to use the
+container. The rest of the examples assume you have sourced it as
+follows::
 
   . ~/code/dev_env/path.bash.inc
 
-
-Initialize a cmake project, with clang::
+Initialize a cmake build directory, out of source, with a clang
+toolchain using the ``cv_cmake_init`` alias::
 
   mkdir -p ~/code/sample-build
   cd ~/code/sample-build
   cv_cmake_init ~/code/dev_env/sample
 
+Now To build, just run ``make`` inside of the container, with the
+``cv_make`` alias::
 
-To make::
+  cd ~/code/sample-build && cv_make
 
-  cv_make
+To run a build executable inside of the container::
 
-To run the executable::
-
-  cv_run ./messages_test
+  cd ~/code/sample-build && cv_run ./messages_test
 
 To test::
 
-  cv_run ctest
+  cd ~/code/sample-build && cv_test
 
-To reconfigure::
+To run cmake::
 
-  cv_cmake .
+  cd ~/code/sample-build && cv_cmake .
+
+You can also run these things commands without sourcing
+``path.bash.inc``, using the ``cv_run`` executable::
+
+  ~/code/dev_env/cv_run make -C ~/code/sample-build
+
+**Note** ``~/code`` is shared between the container and the host, and
+ is simply the parent directory of wherever ``path.bash.inc`` lives.
+ Don't try to put your build folder in another directory tree.  Also,
+ ``cv_run`` and all of the aliases run from host's working directory,
+ but inside of the container.
 
 
 build image
 -----------
 
-To build::
+To build for ubuntu 16.04::
 
-  cd ubuntu16.04
-  docker build -t opencvai/dev_env:16.04
+  ./build.sh
 
 To push::
 
-  docker push opencvai/dev_env:16.04
+  docker push opencvai/dev_env16.04
 
 
 docker notes
