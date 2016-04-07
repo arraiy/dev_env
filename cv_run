@@ -33,7 +33,7 @@ PATH_FLAGS=$(echo \
     --env="PATH=/opt/opencv_ai/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 )
 
-docker run -it \
+docker run -it --rm \
         $PATH_FLAGS \
         $FORWARD_DISPLAY_FLAGS \
 	-u=$(id -u ${USER}):$(id -g ${USER}) \
