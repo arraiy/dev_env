@@ -9,9 +9,13 @@ include(CTest)
 enable_testing()
 
 find_package(GTest REQUIRED)
+find_package(glog REQUIRED)
+find_package(Eigen3 REQUIRED)
 find_package(Protobuf REQUIRED)
 
+include_directories(${EIGEN3_INCLUDE_DIR} SYSTEM)
 include_directories(${GTEST_INCLUDE_DIRS} SYSTEM)
+include_directories(${GLOG_INCLUDE_DIRS} SYSTEM)
 include_directories(${PROTOBUF_INCLUDE_DIRS} SYSTEM)
 
 # for protobuf generated code
@@ -23,7 +27,7 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
 add_library(messages ${PROTO_SRCS} ${PROTO_HDRS})
 target_link_libraries(messages ${PROTOBUF_LIBRARIES})
 
-add_executable(messages_test messages_test.cc)
-target_link_libraries(messages_test messages GTest::GTest GTest::Main)
+add_executable(smoke_test smoke_test.cc)
+target_link_libraries(smoke_test messages GTest::GTest GTest::Main ${glog_LIBRARY})
 
-GTEST_ADD_TESTS(messages_test "" AUTO)
+GTEST_ADD_TESTS(smoke_test "" AUTO)
