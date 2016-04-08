@@ -8,14 +8,15 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror -Wno-unused-parame
 include(CTest)
 enable_testing()
 
-find_package(GTest REQUIRED)
-find_package(glog REQUIRED)
+find_package(Ceres REQUIRED)
 find_package(Eigen3 REQUIRED)
+find_package(GTest REQUIRED)
 find_package(Protobuf REQUIRED)
-
+find_package(glog REQUIRED)
+include_directories(${CERES_INCLUDE_DIRS} SYSTEM)
 include_directories(${EIGEN3_INCLUDE_DIR} SYSTEM)
-include_directories(${GTEST_INCLUDE_DIRS} SYSTEM)
 include_directories(${GLOG_INCLUDE_DIRS} SYSTEM)
+include_directories(${GTEST_INCLUDE_DIRS} SYSTEM)
 include_directories(${PROTOBUF_INCLUDE_DIRS} SYSTEM)
 
 # for protobuf generated code
@@ -31,3 +32,7 @@ add_executable(smoke_test smoke_test.cc)
 target_link_libraries(smoke_test messages GTest::GTest GTest::Main ${glog_LIBRARY})
 
 GTEST_ADD_TESTS(smoke_test "" AUTO)
+
+add_executable(ceres_helloworld ceres_helloworld.cc)
+target_link_libraries(ceres_helloworld ${glog_LIBRARY} ${CERES_LIBRARIES})
+add_test(ceres_helloworld ceres_helloworld)

@@ -25,3 +25,6 @@ RUN apt-get -y update && apt-get install -y \
 
 COPY third_party /tmp/third_party
 RUN cd /tmp/third_party/ && cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang . && make -j7 && cd / && rm -rf /tmp/*
+
+COPY ceres/CMakeLists.txt /tmp/ceres/CMakeLists.txt
+RUN cd /tmp/ceres/ && cmake . && make -j7 && cd / && rm -rf /tmp/*
