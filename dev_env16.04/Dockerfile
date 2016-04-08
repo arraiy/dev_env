@@ -23,8 +23,25 @@ RUN apt-get -y update && apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-COPY third_party /tmp/third_party
-RUN cd /tmp/third_party/ && cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang . && make -j7 && cd / && rm -rf /tmp/*
+COPY third_party/CMakeLists.txt third_party/build.sh /tmp/
 
-COPY ceres/CMakeLists.txt /tmp/ceres/CMakeLists.txt
-RUN cd /tmp/ceres/ && cmake . && make -j7 && cd / && rm -rf /tmp/*
+COPY third_party/gflags.cmake /tmp/external.cmake
+RUN /tmp/build.sh
+
+COPY third_party/glog.cmake /tmp/external.cmake
+RUN /tmp/build.sh
+
+COPY third_party/googletest.cmake /tmp/external.cmake
+RUN /tmp/build.sh
+
+COPY third_party/protobuf.cmake /tmp/external.cmake
+RUN /tmp/build.sh
+
+COPY third_party/opencv.cmake /tmp/external.cmake
+RUN /tmp/build.sh
+
+COPY third_party/boost.cmake /tmp/external.cmake
+RUN /tmp/build.sh
+
+COPY third_party/ceres.cmake /tmp/external.cmake
+RUN /tmp/build.sh
