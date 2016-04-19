@@ -1,5 +1,6 @@
 ExternalProject_Add(protobuf
   PREFIX ${build_prefix}
+  DEPENDS glog googletest gflags
   URL https://github.com/opencv-ai/protobuf/archive/89719f07a35b.zip
   CONFIGURE_COMMAND cmake ${build_prefix}/src/protobuf/cmake
   -DCMAKE_PREFIX_PATH=${prefix}

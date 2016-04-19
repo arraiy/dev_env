@@ -9,11 +9,11 @@ ExternalProject_Add(opencv_contrib
 
 ExternalProject_Add(opencv
   PREFIX ${build_prefix}
-  DEPENDS opencv_contrib
+  DEPENDS opencv_contrib glog googletest gflags
   URL https://github.com/opencv-ai/opencv/archive/46d218b.zip
   CMAKE_ARGS
   -DOPENCV_EXTRA_MODULES_PATH=${build_prefix}/src/opencv_contrib/modules
-  -DWITH_VTK=OFF
+  -DWITH_VTK=ON
   -DCMAKE_PREFIX_PATH=${prefix}
   -DCMAKE_INSTALL_PREFIX=${prefix}
   -DCMAKE_CXX_COMPILER=clang++
@@ -45,18 +45,19 @@ ExternalProject_Add(opencv
   -DBUILD_opencv_plot=OFF
   -DBUILD_opencv_python2=OFF
   -DBUILD_opencv_reg=OFF
-  -DBUILD_opencv_rgbd=OFF
+  -DBUILD_opencv_rgbd=ON
   -DBUILD_opencv_saliency=OFF
   -DBUILD_opencv_shape=OFF
   -DBUILD_opencv_stereo=OFF
   -DBUILD_opencv_stitching=OFF
-  -DBUILD_opencv_structured_light=OFF
+  -DBUILD_opencv_structured_light=ON
   -DBUILD_opencv_superres=OFF
   -DBUILD_opencv_surface_matching=OFF
   -DBUILD_opencv_text=OFF
   -DBUILD_opencv_tracking=OFF
   -DBUILD_opencv_ts=OFF
   -DBUILD_opencv_video=OFF
+  -DBUILD_opencv_viz=ON
   -DBUILD_opencv_videoio=ON
   -DBUILD_opencv_videostab=OFF
   -DBUILD_opencv_world=OFF

@@ -1,5 +1,6 @@
 ExternalProject_Add(googletest
   PREFIX ${build_prefix}
+  DEPENDS gflags glog
   URL https://github.com/opencv-ai/googletest/archive/d225acc90bc3a8.zip
   CMAKE_ARGS
   -DCMAKE_PREFIX_PATH=${prefix}
