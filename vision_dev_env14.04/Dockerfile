@@ -22,5 +22,6 @@ RUN apt-get -y update && apt-get install -y \
     xorg-dev \
     && rm -rf /var/lib/apt/lists/*
 
+ADD third_party/build.sh /tmp/third_party/build.sh
 ADD third_party/vision /tmp/third_party
 RUN cd /tmp/third_party && PATH=/usr/lib/llvm-3.6/bin:$PATH ./build.sh

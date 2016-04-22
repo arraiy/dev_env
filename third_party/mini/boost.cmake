@@ -11,6 +11,7 @@ ExternalProject_Add(boost
     --build-type=minimal
     --with-program_options
     --with-filesystem
+    --with-regex
     --prefix=${prefix}
     -j7
   INSTALL_COMMAND ""

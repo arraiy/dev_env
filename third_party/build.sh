@@ -8,4 +8,4 @@ cmake \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     ..
 make -j7
-rm -rf /tmp/build
+rm -rf /tmp/build /tmp/third_party
