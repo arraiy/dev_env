@@ -1,5 +1,4 @@
 #!/bin/bash -ex
-
 mkdir -p build
 cd build
 cmake \
@@ -9,5 +8,4 @@ cmake \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     ..
 make -j7
-dev_env14.04/Dockerfile
 rm -rf /tmp/build

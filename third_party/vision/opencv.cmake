@@ -9,7 +9,7 @@ ExternalProject_Add(opencv_contrib
 
 ExternalProject_Add(opencv
   PREFIX ${build_prefix}
-  DEPENDS opencv_contrib glog googletest gflags
+  DEPENDS opencv_contrib
   URL https://github.com/opencv-ai/opencv/archive/46d218b.zip
   CMAKE_ARGS
   -DOPENCV_EXTRA_MODULES_PATH=${build_prefix}/src/opencv_contrib/modules

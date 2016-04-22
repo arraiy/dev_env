@@ -1,6 +1,5 @@
 ExternalProject_Add(ceres
   PREFIX ${build_prefix}
-  DEPENDS glog googletest gflags
   URL https://github.com/opencv-ai/ceres-solver/archive/5512f58536e.zip
   CMAKE_ARGS
   -DCMAKE_PREFIX_PATH=${prefix}
