@@ -1,6 +1,13 @@
 #!/bin/bash -ex
-mkdir -p /tmp/build
-cd /tmp/build
-cmake ..
+
+mkdir -p build
+cd build
+cmake \
+    -DOPENCV_AI_PREFIX_PATH=/opt/opencv_ai \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    ..
 make -j7
+dev_env14.04/Dockerfile
 rm -rf /tmp/build
