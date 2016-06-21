@@ -1,13 +1,6 @@
-FROM ubuntu:16.04
+FROM opencvai/mini_dev_env14.04:latest
+RUN  echo 'Acquire::http { Proxy "http://172.17.0.1:3142"; };' >> /etc/apt/apt.conf.d/01proxy
 RUN apt-get -y update && apt-get install -y \
-    build-essential \
-    ccache \
-    clang \
-    clang-format \
-    cmake \
-    curl \
-    gdb \
-    git \
     libavcodec-dev \
     libavformat-dev \
     libdc1394-22-dev \
@@ -26,9 +19,9 @@ RUN apt-get -y update && apt-get install -y \
     libtiff-dev \
     libvtk5-dev \
     pkg-config \
-    unzip \
     xorg-dev \
     && rm -rf /var/lib/apt/lists/*
 
-ADD third_party /tmp/third_party
-RUN cd /tmp/third_party && ./build.sh
+ADD third_party/build.sh /tmp/third_party/build.sh
+ADD third_party/vision /tmp/third_party
+RUN cd /tmp/third_party && PATH=/usr/lib/llvm-3.6/bin:$PATH ./build.sh
